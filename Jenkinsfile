@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker build -t 98800/docker-java-app-example:latest --no-cache ."
+                        sh "docker build -t 98800/docker-java-app-example:v1 --no-cache ."
                     }
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
-                        sh "docker push 98800/docker-java-app-example:latest"
+                        sh "docker push 98800/docker-java-app-example:v1"
                     }
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         // You can update the port or any other options based on your requirements
-                        sh "docker run -d -p 8081:8080 98800/docker-java-app-example:latest"
+                        sh "docker run -d -p 8081:8080 98800/docker-java-app-example:v1"
                     }
                 }
             }
