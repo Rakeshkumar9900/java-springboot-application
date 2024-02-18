@@ -12,7 +12,7 @@ WORKDIR /app
 COPY pom.xml .
 
 # Check if .mvn directory exists before copying
-COPY .mvn ./.mvn || true
+RUN test -d .mvn && cp -r .mvn ./.mvn || true
 
 # Download dependencies only to cache them
 RUN mvn -B dependency:go-offline
