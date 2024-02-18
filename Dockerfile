@@ -21,4 +21,4 @@ RUN mvn package -DskipTests
 EXPOSE 8080
 
 # Run the application
-CMD ["java", "-jar", "target/your-application-name.jar"]
+CMD ["java", "-jar", "target/docker-java-app-example.jar"]
