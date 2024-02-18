@@ -8,9 +8,11 @@ RUN apk update && apk add bash
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the Maven build file and settings for dependency download
+# Copy the Maven build file
 COPY pom.xml .
-COPY .mvn ./.mvn
+
+# Check if .mvn directory exists before copying
+COPY .mvn ./.mvn || true
 
 # Download dependencies only to cache them
 RUN mvn -B dependency:go-offline
