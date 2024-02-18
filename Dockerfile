@@ -1,30 +1,23 @@
 # Use an official OpenJDK runtime as a parent image
-FROM openjdk:8-jre-alpine
-
-# set shell to bash
-# source: https://stackoverflow.com/a/40944512/3128926
-RUN apk update && apk add bash
+FROM openjdk:17-jdk-alpine
 
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the Maven build file
-COPY pom.xml .
+# Copy the current directory contents into the container at /app
+COPY . .
 
-# Check if .mvn directory exists before copying
-RUN test -d .mvn && cp -r .mvn ./.mvn || true
+# Install Maven
+RUN apk add --no-cache maven
 
-# Download dependencies only to cache them
+# Run Maven to download dependencies
 RUN mvn -B dependency:go-offline
-
-# Copy the rest of the application code
-COPY src ./src
-
-# Build the application
-RUN mvn -B package
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Run the JAR file when the container launches
-CMD ["java", "-jar", "target/*.jar"]
+# Define environment variable
+ENV NAME World
+
+# Run application when the container launches
+CMD ["mvn", "spring-boot:run"]
