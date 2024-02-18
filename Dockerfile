@@ -1,24 +1,23 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+# Use an official Maven runtime as a parent image
+FROM maven:3.8.4-openjdk-11-slim
 
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the Maven project files
-COPY pom.xml .
+# Copy the project files into the container at /app
+COPY . .
 
-# Build dependencies
-RUN apk add --no-cache maven
-RUN mvn -B dependency:go-offline
+# Run Maven clean install to build the project
+RUN mvn clean install
 
-# Copy the application source
-COPY src src
-
-# Package the application
-RUN mvn package -DskipTests
+# Set the working directory for the application
+WORKDIR /app/target
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
-# Run the application
-CMD ["java", "-jar", "target/docker-java-app-example.jar"]
+# Define environment variable
+ENV NAME World
+
+# Run the application when the container launches
+CMD ["java", "-jar", "your-application-jar-name.jar"]
