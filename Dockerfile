@@ -8,11 +8,21 @@ RUN apk update && apk add bash
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the compiled JAR file into the container at /app
-COPY target/*.jar /app/
+# Copy the Maven build file and settings for dependency download
+COPY pom.xml .
+COPY .mvn ./.mvn
+
+# Download dependencies only to cache them
+RUN mvn -B dependency:go-offline
+
+# Copy the rest of the application code
+COPY src ./src
+
+# Build the application
+RUN mvn -B package
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
 # Run the JAR file when the container launches
-CMD ["java", "-jar", "*.jar"]
+CMD ["java", "-jar", "target/*.jar"]
