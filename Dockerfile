@@ -20,4 +20,4 @@ EXPOSE 8080
 ENV NAME World
 
 # Run the application when the container launches
-CMD ["java", "-jar", "your-application-jar-name.jar"]
+CMD ["java", "-jar", "docker-java-app-example.jar"]
