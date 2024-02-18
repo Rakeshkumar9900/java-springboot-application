@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                
+               git credentialsId: 'git-token', url: 'https://github.com/Rakeshkumar9900/java-springboot-application.git' 
             }
         }
 
@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-                        sh "docker build -t 98800/valentine:v1 ."
+                        sh "docker build -t 98800/docker-java-app-example:latest ."
                     }
                 }
             }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-                        sh "docker push 98800/valentine:v1"
+                        sh "docker push 98800/docker-java-app-example:latest"
                     }
                 }
             }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-                        sh "docker run -d -p 8081:80 98800/valentine:v1"
+                        sh "docker run -d -p 8081:80 98800/docker-java-app-example:latest"
                     }
                 }
             }
