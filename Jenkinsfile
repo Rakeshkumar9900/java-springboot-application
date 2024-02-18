@@ -15,7 +15,9 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-                        sh "docker build -t 98800/docker-java-app-example:latest ."
+            
+                        sh "docker build -t 98800/docker-java-app-example:latest --no-cache ."
+
                     }
                 }
             }
