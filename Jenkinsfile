@@ -7,17 +7,15 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-               git credentialsId: 'git-token', url: 'https://github.com/Rakeshkumar9900/java-springboot-application.git' 
+                git credentialsId: 'git-token', url: 'https://github.com/Rakeshkumar9900/java-springboot-application.git' 
             }
         }
 
         stage('Build and tag docker image') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-            
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         sh "docker build -t 98800/docker-java-app-example:latest --no-cache ."
-
                     }
                 }
             }
@@ -26,7 +24,7 @@ pipeline {
         stage('Push docker image') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
                         sh "docker push 98800/docker-java-app-example:latest"
                     }
                 }
@@ -36,8 +34,9 @@ pipeline {
         stage('Deploy docker container') {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker')  {
-                        sh "docker run -d -p 8081:80 98800/docker-java-app-example:latest"
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        // You can update the port or any other options based on your requirements
+                        sh "docker run -d -p 8081:8080 98800/docker-java-app-example:latest"
                     }
                 }
             }
